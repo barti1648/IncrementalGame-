@@ -45,7 +45,14 @@ function PlayerData.default()
             autoMine     = 0,
         },
 
-        -- ── Bonfire Upgrades  (Zone 3; permanent) ─────────────────
+        -- ── Axe Upgrades  (Zone 3; paid with Wood) ────────────────
+        axeUpgrades = {
+            axePower  = 0,
+            autoChop  = 0,
+            woodBonus = 0,
+        },
+
+        -- ── Bonfire Upgrades  (Zone 3; paid with Wood; permanent) ──
         bonfireUpgrades = {
             burnSpeed  = 0,
             ashPerBurn = 0,

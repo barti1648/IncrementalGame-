@@ -211,10 +211,44 @@ end
 --  Merchant helpers
 -- ────────────────────────────────────────────────────────────
 
+--- Cost of the NEXT merchant item purchase.
+--- cost(level) = floor( baseCost * 2^currentBought )
+function BalanceMath.merchantCost(item, currentBought)
+    return math.floor(item.baseCost * (2 ^ currentBought))
+end
+
 --- Is a merchant item fully purchased?
 function BalanceMath.merchantMaxed(data, itemId, maxBuys)
     local bought = (data.merchantPurchases and data.merchantPurchases[itemId]) or 0
     return bought >= maxBuys
+end
+
+-- ────────────────────────────────────────────────────────────
+--  Forest / Axe Stats
+-- ────────────────────────────────────────────────────────────
+
+--- Returns damage per axe swing.
+function BalanceMath.axePower(data)
+    local base = GameConfig.FOREST.BASE_AXE_POWER
+    local lvl  = (data.axeUpgrades and data.axeUpgrades.axePower) or 0
+    base = base + lvl
+    if data.evolutions >= 10 then base = base * 2 end
+    base = base * (1 + (data.ash or 0) * GameConfig.FOREST.ASH_GLOBAL_BONUS)
+    return math.max(1, math.floor(base))
+end
+
+--- Returns auto-chop rate (swings per second).
+function BalanceMath.autoChopRate(data)
+    local lvl  = (data.axeUpgrades and data.axeUpgrades.autoChop) or 0
+    local rate = lvl * 0.5
+    if data.evolutions >= 10 then rate = rate * 2 end
+    return rate
+end
+
+--- Returns bonus wood per tree felled.
+function BalanceMath.woodBonusPerTree(data)
+    local lvl = (data.axeUpgrades and data.axeUpgrades.woodBonus) or 0
+    return lvl
 end
 
 return BalanceMath
