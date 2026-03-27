@@ -303,9 +303,12 @@ RE_PurchaseUpgrade.OnServerEvent:Connect(function(player, category, upgradeKey)
         local def = GameConfig.REBIRTH_UPGRADES[upgradeKey]
         if def then bought = tryBuy(def, data.rebirthUpgrades, "rebirths") end
 
-    elseif category == "clicker" and data.evolutions >= 1 and data.clickerUpgrades[upgradeKey] ~= nil then
+    elseif category == "clicker" and data.evolutions >= 1 then
         local def = GameConfig.CLICKER_UPGRADES[upgradeKey]
-        if def then bought = tryBuy(def, data.clickerUpgrades, "clicks") end
+        if def then
+            data.clickerUpgrades[upgradeKey] = data.clickerUpgrades[upgradeKey] or 0
+            bought = tryBuy(def, data.clickerUpgrades, "clicks")
+        end
 
     elseif category == "mining" and data.evolutions >= 4 and data.miningUpgrades[upgradeKey] ~= nil then
         local def = GameConfig.MINING_UPGRADES[upgradeKey]
