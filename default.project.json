@@ -1,0 +1,34 @@
+{
+  "name": "IncrementalGame",
+  "tree": {
+    "$className": "DataModel",
+
+    "ReplicatedStorage": {
+      "$className": "ReplicatedStorage",
+      "Shared": {
+        "$className": "Folder",
+        "GameConfig":  { "$path": "src/shared/GameConfig.lua"  },
+        "BalanceMath": { "$path": "src/shared/BalanceMath.lua" },
+        "PlayerData":  { "$path": "src/shared/PlayerData.lua"  }
+      }
+    },
+
+    "ServerScriptService": {
+      "$className": "ServerScriptService",
+      "GameServer":   { "$path": "src/server/GameServer.server.lua"   },
+      "WorldBuilder": { "$path": "src/server/WorldBuilder.server.lua" }
+    },
+
+    "StarterPlayer": {
+      "$className": "StarterPlayer",
+      "StarterPlayerScripts": {
+        "$className": "StarterPlayerScripts",
+        "GrassSystem":   { "$path": "src/client/GrassSystem.client.lua"   },
+        "ClickerSystem": { "$path": "src/client/ClickerSystem.client.lua" },
+        "MiningSystem":  { "$path": "src/client/MiningSystem.client.lua"  },
+        "ForestSystem":  { "$path": "src/client/ForestSystem.client.lua"  },
+        "HUD":           { "$path": "src/client/HUD.client.lua"           }
+      }
+    }
+  }
+}

@@ -41,40 +41,57 @@ README.md
 
 ## 🚀 Roblox Studio Import Instructions
 
-### Step 1 – Install Rojo (recommended)
+> ⚠️ **Common error:** `Infinite yield possible on 'ReplicatedStorage:WaitForChild("Shared")'`
+> This means the **`Shared` folder is missing from `ReplicatedStorage`**.  
+> Follow either method below carefully — the `Shared` folder **must** exist before the server scripts run.
 
-[Rojo](https://rojo.space/) lets you sync this file structure directly into Studio.
+---
+
+### Method A – Rojo (recommended, one command)
+
+A `default.project.json` is included in the repo root. Just run:
 
 ```bash
-# Install Rojo CLI (requires Rust / Foreman)
+# 1. Install Rojo CLI (https://rojo.space/docs/installation/)
+# 2. In the repo root:
 rojo build --output game.rbxlx
 ```
 
-Then open `game.rbxlx` in Roblox Studio.
+Open `game.rbxlx` in Roblox Studio — all folders and scripts will be in the right place.
 
-### Step 2 – Manual import (no Rojo needed)
+Or use live sync during development:
+
+```bash
+rojo serve   # then connect from the Rojo plugin inside Studio
+```
+
+---
+
+### Method B – Manual import (no Rojo)
+
+**Critical:** Create the `Shared` folder inside `ReplicatedStorage` **first**, before adding the server/client scripts.
 
 1. Open **Roblox Studio** and create a new **Baseplate** project.
-2. In the **Explorer** panel create this structure:
+2. In the **Explorer** panel build this exact structure (order matters for the folder):
 
 ```
 ReplicatedStorage/
-  Shared/           ← Folder
-    GameConfig      ← ModuleScript  (paste src/shared/GameConfig.lua)
-    BalanceMath     ← ModuleScript  (paste src/shared/BalanceMath.lua)
-    PlayerData      ← ModuleScript  (paste src/shared/PlayerData.lua)
+  Shared/           ← Folder          ← CREATE THIS FIRST
+    GameConfig      ← ModuleScript    (paste src/shared/GameConfig.lua)
+    BalanceMath     ← ModuleScript    (paste src/shared/BalanceMath.lua)
+    PlayerData      ← ModuleScript    (paste src/shared/PlayerData.lua)
 
 ServerScriptService/
-  GameServer        ← Script        (paste src/server/GameServer.server.lua)
-  WorldBuilder      ← Script        (paste src/server/WorldBuilder.server.lua)
+  GameServer        ← Script          (paste src/server/GameServer.server.lua)
+  WorldBuilder      ← Script          (paste src/server/WorldBuilder.server.lua)
 
 StarterPlayer/
   StarterPlayerScripts/
-    GrassSystem     ← LocalScript   (paste src/client/GrassSystem.client.lua)
-    ClickerSystem   ← LocalScript   (paste src/client/ClickerSystem.client.lua)
-    MiningSystem    ← LocalScript   (paste src/client/MiningSystem.client.lua)
-    ForestSystem    ← LocalScript   (paste src/client/ForestSystem.client.lua)
-    HUD             ← LocalScript   (paste src/client/HUD.client.lua)
+    GrassSystem     ← LocalScript     (paste src/client/GrassSystem.client.lua)
+    ClickerSystem   ← LocalScript     (paste src/client/ClickerSystem.client.lua)
+    MiningSystem    ← LocalScript     (paste src/client/MiningSystem.client.lua)
+    ForestSystem    ← LocalScript     (paste src/client/ForestSystem.client.lua)
+    HUD             ← LocalScript     (paste src/client/HUD.client.lua)
 ```
 
 3. **Delete the default Baseplate** (or keep it – the WorldBuilder creates its own platforms).
@@ -186,41 +203,10 @@ Auto-save every **60 seconds**. Also saves on `PlayerRemoving`.
 
 ---
 
-## 🔗 Rojo project.json (optional)
+## 🔗 Rojo project.json
 
-If you use Rojo, create `default.project.json` in the repo root:
-
-```json
-{
-  "name": "IncrementalGame",
-  "tree": {
-    "$className": "DataModel",
-    "ReplicatedStorage": {
-      "Shared": {
-        "$className": "Folder",
-        "GameConfig":  { "$path": "src/shared/GameConfig.lua"  },
-        "BalanceMath": { "$path": "src/shared/BalanceMath.lua" },
-        "PlayerData":  { "$path": "src/shared/PlayerData.lua"  }
-      }
-    },
-    "ServerScriptService": {
-      "GameServer":   { "$path": "src/server/GameServer.server.lua"   },
-      "WorldBuilder": { "$path": "src/server/WorldBuilder.server.lua" }
-    },
-    "StarterPlayer": {
-      "StarterPlayerScripts": {
-        "GrassSystem":   { "$path": "src/client/GrassSystem.client.lua"   },
-        "ClickerSystem": { "$path": "src/client/ClickerSystem.client.lua" },
-        "MiningSystem":  { "$path": "src/client/MiningSystem.client.lua"  },
-        "ForestSystem":  { "$path": "src/client/ForestSystem.client.lua"  },
-        "HUD":           { "$path": "src/client/HUD.client.lua"           }
-      }
-    }
-  }
-}
-```
-
-Run `rojo serve` and connect from Studio's Rojo plugin.
+A `default.project.json` is already included in the repo root — no manual creation needed.
+Just run `rojo build --output game.rbxlx` or `rojo serve` and connect from Studio's Rojo plugin.
 
 ---
 
