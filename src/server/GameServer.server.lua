@@ -165,7 +165,7 @@ local function doReset_Rebirth(data)
     data.wood   = 0
     -- grass upgrades reset
     data.grassUpgrades   = { spawnSpeed = 0, bonusGrass = 0, radius = 0 }
-    data.clickerUpgrades = { clickPower = 0, autoClick  = 0, grassPerClick = 0 }
+    data.clickerUpgrades = { clickPower = 0, autoClick  = 0, bonusGrass = 0 }
     data.miningUpgrades  = { pickaxePower = 0, autoMine = 0 }
     -- axeUpgrades and bonfireUpgrades stay (Zone 3 is permanent)
     -- rebirthUpgrades STAY

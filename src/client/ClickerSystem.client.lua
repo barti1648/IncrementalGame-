@@ -55,7 +55,7 @@ local function wireButtons(sg)
     local btnClick    = frame:FindFirstChild("ClickButton")
     local btnPower    = frame:FindFirstChild("BuyClickPower")
     local btnAuto     = frame:FindFirstChild("BuyAutoClick")
-    local btnGPC      = frame:FindFirstChild("BuyGrassPerClick")
+    local btnGPC      = frame:FindFirstChild("BuyBonusGrass")
 
     if btnClick then
         btnClick.MouseButton1Click:Connect(function()
@@ -88,7 +88,7 @@ local function wireButtons(sg)
     if btnGPC then
         btnGPC.MouseButton1Click:Connect(function()
             if not nearBoard() then return end
-            RE_Upgrade:FireServer("clicker", "grassPerClick")
+            RE_Upgrade:FireServer("clicker", "bonusGrass")
         end)
     end
 end
@@ -105,7 +105,7 @@ local function updateLabels()
     local upgrades = {
         { btn = "BuyClickPower",   key = "clickPower",    cur = "clicks", cat = "clicker" },
         { btn = "BuyAutoClick",    key = "autoClick",     cur = "clicks", cat = "clicker" },
-        { btn = "BuyGrassPerClick",key = "grassPerClick", cur = "clicks", cat = "clicker" },
+        { btn = "BuyBonusGrass",   key = "bonusGrass",    cur = "clicks", cat = "clicker" },
     }
     for _, u in ipairs(upgrades) do
         local btn = frame:FindFirstChild(u.btn)

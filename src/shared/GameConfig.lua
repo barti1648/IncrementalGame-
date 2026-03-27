@@ -96,8 +96,8 @@ GameConfig.CLICKER_UPGRADES = {
                       label = "👆 +1 Click Power",    desc = "+1 click per click" },
     autoClick     = { baseCost = 50,  costMultiplier = 1.6, maxLevel =  50,
                       label = "🤖 Auto-Click",        desc = "+0.5 clicks/sec" },
-    grassPerClick = { baseCost = 100, costMultiplier = 1.8, maxLevel =  50,
-                      label = "🌿 Grass on Click",    desc = "+1 grass per click" },
+    bonusGrass    = { baseCost = 100, costMultiplier = 1.8, maxLevel =  50,
+                      label = "🌿 Bonus Grass",        desc = "+1 grass per click" },
 }
 
 -- Mining Upgrades  (paid with Rocks; reset on Rebirth; unlocked by Evo 4)

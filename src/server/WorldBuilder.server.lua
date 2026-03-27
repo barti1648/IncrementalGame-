@@ -195,7 +195,7 @@ do
     addLabel (frame, 140, "Earn Clicks → buy upgrades")
     addButton(frame, 200, "👆 +1 Click Power [clicks]",   Color3.fromRGB(160, 100, 20), "BuyClickPower")
     addButton(frame, 265, "🤖 Auto-Click     [clicks]",   Color3.fromRGB(160, 100, 20), "BuyAutoClick")
-    addButton(frame, 330, "🌿 Grass/Click    [clicks]",   Color3.fromRGB(160, 100, 20), "BuyGrassPerClick")
+    addButton(frame, 330, "🌿 Bonus Grass    [clicks]",   Color3.fromRGB(160, 100, 20), "BuyBonusGrass")
 end
 
 -- ────────────────────────────────────────────────────────────

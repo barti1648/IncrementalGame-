@@ -133,18 +133,20 @@ function BalanceMath.clicksPerClick(data)
     return math.max(1, math.floor(base))
 end
 
---- Returns auto-click rate (clicks per second).
+--- Returns auto-click rate (clicks per second), scaled by clickPower.
 function BalanceMath.autoClickRate(data)
     local lvl  = data.clickerUpgrades.autoClick or 0
     local rate = lvl * 0.5
     if data.evolutions >= 2 then rate = rate * 2 end
     if data.evolutions >= 10 then rate = rate * 2 end
+    -- Each auto-click produces as many clicks as a manual click
+    rate = rate * BalanceMath.clicksPerClick(data)
     return rate
 end
 
 --- Returns grass earned per click.
 function BalanceMath.grassPerClick(data)
-    local lvl = data.clickerUpgrades.grassPerClick or 0
+    local lvl = data.clickerUpgrades.bonusGrass or 0
     local g   = lvl
     if data.evolutions >= 10 then g = g * 2 end
     g = g * (1 + (data.ash or 0) * GameConfig.FOREST.ASH_GLOBAL_BONUS)

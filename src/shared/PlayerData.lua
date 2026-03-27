@@ -36,7 +36,7 @@ function PlayerData.default()
         clickerUpgrades = {
             clickPower    = 0,
             autoClick     = 0,
-            grassPerClick = 0,
+            bonusGrass    = 0,
         },
 
         -- ── Mining Upgrades  (reset on rebirth; needs Evo ≥ 4) ────
