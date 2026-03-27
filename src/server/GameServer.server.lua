@@ -183,7 +183,7 @@ end
 -- ────────────────────────────────────────────────────────────
 
 -- CollectGrass(amount, isGolden, isSeed)
-RE_CollectGrass.OnServerEvent:Connect(function(player, amount, isGolden, dropSeed)
+RE_CollectGrass.OnServerEvent:Connect(function(player, amount, isGolden, isSeed)
     local data = getCache(player)
     if not data then return end
     amount = math.floor(tonumber(amount) or 0)
@@ -200,12 +200,9 @@ RE_CollectGrass.OnServerEvent:Connect(function(player, amount, isGolden, dropSee
 
     data.grass = data.grass + amount
 
-    -- Seed drop (Zone 2 only — client passes dropSeed flag but we re-roll on server)
-    if dropSeed then
-        local seedChance = BalanceMath.seedDropChance(data)
-        if math.random() < seedChance then
-            data.seed = data.seed + 1
-        end
+    -- Seed drop: client tagged the blade as a seed at spawn time (mirrors isGolden logic)
+    if isSeed then
+        data.seed = (data.seed or 0) + 1
     end
 
     updateLeaderstats(player, data)

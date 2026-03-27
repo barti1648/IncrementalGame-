@@ -49,6 +49,7 @@ grassFolder.Parent = workspace
 local activeBlade = {}   -- array of Parts currently on the field
 
 local GOLDEN_COLOR  = Color3.fromRGB(255, 215, 0)
+local SEED_COLOR    = Color3.fromRGB(100, 220, 255)  -- light-blue tint for seed blades
 local NORMAL_COLORS = {
     Color3.fromRGB(56,  142, 60),
     Color3.fromRGB(76,  175, 80),
@@ -69,6 +70,7 @@ local function spawnBlade()
     if #activeBlade >= maxBlades then return end
 
     local isGolden = (math.random() < BalanceMath.goldenGrassChance(localData))
+    local isSeed   = (not isGolden) and (math.random() < BalanceMath.seedDropChance(localData))
     local height   = math.random() * 0.6 + 0.4
     local blade    = Instance.new("Part")
     blade.Anchored    = true
@@ -76,17 +78,27 @@ local function spawnBlade()
     blade.CastShadow  = false
     blade.Size        = Vector3.new(0.4, height, 0.4)
     blade.Position    = randomPlatformPos() + Vector3.new(0, height / 2, 0)
-    blade.Color       = isGolden and GOLDEN_COLOR or NORMAL_COLORS[math.random(#NORMAL_COLORS)]
+    blade.Color       = isGolden and GOLDEN_COLOR
+                     or isSeed   and SEED_COLOR
+                     or NORMAL_COLORS[math.random(#NORMAL_COLORS)]
     blade.Material    = Enum.Material.Grass
 
     -- Tag the blade
     blade:SetAttribute("IsGolden", isGolden)
+    blade:SetAttribute("IsSeed",   isSeed)
     blade:SetAttribute("Collected", false)
 
     -- Sparkle effect on golden grass
     if isGolden then
         local sparkle = Instance.new("Sparkles")
         sparkle.SparkleColor = Color3.fromRGB(255, 220, 50)
+        sparkle.Parent       = blade
+    end
+
+    -- Particle effect on seed blades
+    if isSeed then
+        local sparkle = Instance.new("Sparkles")
+        sparkle.SparkleColor = Color3.fromRGB(100, 220, 255)
         sparkle.Parent       = blade
     end
 
@@ -164,17 +176,15 @@ RunService.Heartbeat:Connect(function(dt)
                 -- Calculate grass amount
                 local grassAmount = BalanceMath.grassPerPickup(localData)
                 local isGolden    = blade:GetAttribute("IsGolden") or false
+                local isSeed      = blade:GetAttribute("IsSeed")   or false
                 if isGolden then
                     grassAmount = grassAmount * GameConfig.GRASS.GOLDEN_GRASS_MULTIPLIER
                 end
                 grassAmount = math.floor(grassAmount)
 
-                -- Seed drop check (Zone 2 only)
-                local dropSeed = isInZone2()
-
                 -- Send to server (batched: send each collected blade)
                 if collectCooldown <= 0 then
-                    RE_Collect:FireServer(grassAmount, isGolden, dropSeed)
+                    RE_Collect:FireServer(grassAmount, isGolden, isSeed)
                     collectCooldown = 0.05  -- 50ms cooldown between fires
 
                     -- Visual feedback: float-up label
@@ -186,9 +196,11 @@ RunService.Heartbeat:Connect(function(dt)
                     local lbl = Instance.new("TextLabel")
                     lbl.Size              = UDim2.new(1, 0, 1, 0)
                     lbl.BackgroundTransparency = 1
-                    lbl.TextColor3        = isGolden and GOLDEN_COLOR or Color3.new(1, 1, 1)
+                    lbl.TextColor3        = isGolden and GOLDEN_COLOR
+                                         or isSeed   and SEED_COLOR
+                                         or Color3.new(1, 1, 1)
                     lbl.TextStrokeTransparency = 0
-                    lbl.Text              = "+" .. tostring(grassAmount)
+                    lbl.Text              = isSeed and "+🌱" or ("+" .. tostring(grassAmount))
                     lbl.Font              = Enum.Font.GothamBold
                     lbl.TextScaled        = true
                     lbl.Parent            = billboard

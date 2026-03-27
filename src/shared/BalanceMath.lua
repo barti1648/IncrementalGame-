@@ -102,9 +102,9 @@ function BalanceMath.goldenGrassChance(data)
     return chance
 end
 
---- Returns seed drop chance per grass blade (Zone 2 only).
+--- Returns seed drop chance per grass blade.
 function BalanceMath.seedDropChance(data)
-    local chance = GameConfig.GRASS.SEED_CHANCE_ZONE2
+    local chance = GameConfig.GRASS.SEED_CHANCE
     if data.evolutions >= 8 then chance = chance * 2 end
     return chance
 end

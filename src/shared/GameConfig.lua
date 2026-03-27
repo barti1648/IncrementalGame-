@@ -24,7 +24,7 @@ GameConfig.GRASS = {
     MAX_BLADES_ON_FIELD    = 60,    -- cap to keep client smooth
     GOLDEN_GRASS_BASE_CHANCE = 0.05, -- 5 % base; boosted by Evo 7
     GOLDEN_GRASS_MULTIPLIER  = 5,   -- golden blade gives 5× grass
-    SEED_CHANCE_ZONE2        = 0.0025, -- 0.25 % per blade in Zone 2
+    SEED_CHANCE              = 0.0025, -- 0.25 % per blade (any zone)
 }
 
 -- ────────────────────────────────────────────────────────────
