@@ -65,7 +65,16 @@ local function randomPlatformPos()
     )
 end
 
-local function spawnBlade()
+local function randomZone2Pos()
+    local z2 = GameConfig.MYSTIC_REALM_POS
+    return Vector3.new(
+        z2.X + math.random() * 68 - 34,
+        GRASS_Y,
+        z2.Z + math.random() * 68 - 34
+    )
+end
+
+local function spawnBlade(inZone2)
     local maxBlades = GameConfig.GRASS.MAX_BLADES_ON_FIELD
     if #activeBlade >= maxBlades then return end
 
@@ -77,7 +86,7 @@ local function spawnBlade()
     blade.CanCollide  = false
     blade.CastShadow  = false
     blade.Size        = Vector3.new(0.4, height, 0.4)
-    blade.Position    = randomPlatformPos() + Vector3.new(0, height / 2, 0)
+    blade.Position    = (inZone2 and randomZone2Pos() or randomPlatformPos()) + Vector3.new(0, height / 2, 0)
     blade.Color       = isGolden and GOLDEN_COLOR
                      or isSeed   and SEED_COLOR
                      or NORMAL_COLORS[math.random(#NORMAL_COLORS)]
@@ -152,8 +161,9 @@ RunService.Heartbeat:Connect(function(dt)
     spawnTimer = spawnTimer + dt
     if spawnTimer >= interval then
         spawnTimer = 0
-        if isOnPlatform1() or isInZone2() then
-            spawnBlade()
+        local z2 = isInZone2()
+        if isOnPlatform1() or z2 then
+            spawnBlade(z2)
         end
     end
 
